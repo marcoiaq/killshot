@@ -5,10 +5,6 @@ import fs from 'fs'
 import path from 'path'
 import { GoogleGenerativeAI } from '@google/generative-ai'
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2026-02-25.clover' as any,
-})
-
 const STORAGE_DIR = '/tmp/killshots'
 
 async function generateAnalysis(idea: string) {
@@ -50,6 +46,10 @@ Rules:
 export async function POST(req: NextRequest) {
   const body = await req.text()
   const sig = req.headers.get('stripe-signature')
+
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+    apiVersion: '2026-02-25.clover' as any,
+  })
 
   let event: Stripe.Event
 
